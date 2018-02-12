@@ -1,2 +1,3 @@
 DROP DATABASE IF EXISTS lifeprogress;
 CREATE DATABASE lifeprogress;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
