@@ -26,7 +26,7 @@ CREATE TABLE user_profile
 CREATE TABLE weight
 (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  value SMALLINT NOT NULL,
+  value REAL NOT NULL,
   unit UUID REFERENCES weight_unit (id) NOT NULL,
   timestamp TIMESTAMP NOT NULL
 );
