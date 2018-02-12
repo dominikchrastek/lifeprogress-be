@@ -14,6 +14,7 @@ const getWeights = `
 	 unit,
 	 timestamp
 	FROM user_weight WHERE user_id = $1
+	ORDER BY timestamp
 `
 
 // Get route

@@ -8,7 +8,7 @@ import (
 )
 
 const getQuery = `
-	SELECT * FROM weight_with_unit
+	SELECT * FROM weight_with_unit ORDER BY timestamp
 `
 
 // GetAll weights
