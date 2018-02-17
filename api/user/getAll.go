@@ -14,8 +14,7 @@ const getAllQuery = `
 // GetAll route
 func (r *Routes) GetAll(c *gin.Context) {
 	var users []models.User
-	err := r.Db.Select(&users, getAllQuery)
-	if err != nil {
+	if err := r.Db.Select(&users, getAllQuery); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}

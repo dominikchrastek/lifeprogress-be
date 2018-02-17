@@ -1,0 +1,41 @@
+TODO: create this api structure
+
+/api
+  /meta
+    GET: get meta stuff DONE B,F
+
+  /user
+    GET: get all users DONE
+    /:id
+      GET: get user DONE
+      POST: create user
+      DELETE: delete user
+      PUT: update user
+      /wsource
+        GET: get {id} user's  wsources DONE
+        POST: create {id} user's  wsources DONE
+        DELETE: delete {id} user's  wsources
+      /wsrecord
+        GET: get {id} user's  wsrecords
+        POST: create {id} user's wsrecord
+        DELETE: delete {id} user's  wsrecord
+      /weight
+        GET: get {id} user's  weights DONE B,F
+        POST: create {id} user's  weight DONE B,F
+        PUT: update {id} user's  weight
+        DELETE: delete {id} user's  weight
+  /wsource
+    GET: get wsources DONE B,F
+    POST: create wsource DONE, B,F
+    PUT: update wsource
+    DELETE: delete wsource
+    /:id
+      GET: get {id} wsource
+  /currency
+    GET: get currencies DONE
+    POST: create currency
+    DELETE: create currency
+    PUT: create currency
+    /:id
+      GET: get currency
+

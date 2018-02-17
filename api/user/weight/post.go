@@ -1,4 +1,4 @@
-package userWeight
+package weight
 
 import (
 	"fmt"
@@ -21,7 +21,6 @@ const postQueryWithTimestamp = `
 const connectorQuery = `
 	INSERT INTO user_weight_connector (user_id, weight_id)
 	VALUES (:user_id, :weight_id)
-	RETURNING id
 `
 const getPostWeight = `
 	SELECT
@@ -49,7 +48,6 @@ func (r *Routes) Post(c *gin.Context) {
 	if data.Timestamp == "" {
 		query = postQuery
 	} else {
-		fmt.Print(data.Timestamp)
 		query = postQueryWithTimestamp
 	}
 
@@ -62,22 +60,17 @@ func (r *Routes) Post(c *gin.Context) {
 
 	// id of created weight
 	var id string
-	err = stmt.QueryRow(&data).Scan(&id)
-	if err != nil {
+	if err := stmt.QueryRow(&data).Scan(&id); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
-	// prepare connector query
-	cStmt, err := r.Db.PrepareNamed(connectorQuery)
-	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
-	}
+	fmt.Println(id)
 
-	// unsert connect weight with user
-	cData := models.WeightConnectUser{ID: 1, UserID: userID, WeightID: id}
-	if _, err := cStmt.Exec(&cData); err != nil {
+	// insert connect weight with user
+	cData := map[string]interface{}{"user_id": userID, "weight_id": id}
+	fmt.Println(cData)
+	if _, err := r.Db.NamedExec(connectorQuery, cData); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}

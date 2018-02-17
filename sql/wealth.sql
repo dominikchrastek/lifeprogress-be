@@ -1,10 +1,13 @@
 --  WEALTH STUFF
-DROP VIEW IF EXISTS ws_with_asset;
-DROP TABLE IF EXISTS w_user_connector;
-DROP TABLE IF EXISTS w_currency_connector;
-DROP TABLE IF EXISTS w_record;
-DROP TABLE IF EXISTS w_source;
-DROP TABLE IF EXISTS asset_type;
+DROP VIEW IF EXISTS user_ws;
+DROP VIEW IF EXISTS ws_with_type;
+DROP VIEW IF EXISTS ws_currency;
+
+DROP TABLE IF EXISTS ws_user_connector;
+DROP TABLE IF EXISTS ws_currency_connector;
+DROP TABLE IF EXISTS ws_record;
+DROP TABLE IF EXISTS wsource;
+DROP TABLE IF EXISTS ws_type;
 DROP TABLE IF EXISTS currency;
 
 -- TABLES
@@ -14,51 +17,73 @@ CREATE TABLE currency
   name VARCHAR(64) NOT NULL
 );
 
-CREATE TABLE asset_type
+CREATE TABLE ws_type
 (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(64) NOT NULL
 );
 
-CREATE TABLE w_source (
+CREATE TABLE wsource (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(64) NOT NULL,
-  asset_type_id UUID REFERENCES asset_type (id) NOT NULL
+  ws_type UUID REFERENCES ws_type (id) NOT NULL
 );
 
-CREATE TABLE w_user_connector (
+CREATE TABLE ws_user_connector (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id INT REFERENCES user_profile (id) NOT NULL,
-  ws_id UUID REFERENCES w_source (id) NOT NULL
+  user_id UUID REFERENCES user_profile (id) NOT NULL,
+  ws_id UUID REFERENCES wsource (id) NOT NULL
 );
 
 CREATE TABLE ws_currency_connector (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   currency_ID UUID REFERENCES currency (id) NOT NULL,
-  ws_id UUID REFERENCES w_source (id) NOT NULL
+  ws_id UUID REFERENCES wsource (id) NOT NULL
 );
 
 CREATE TABLE ws_record (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(64) NOT NULL,
   value real NOT NULL,
-  w_source_id UUID REFERENCES w_source (id) NOT NULL,
-  user_id INT REFERENCES user_profile (id) NOT NULL
+  ws_id UUID REFERENCES wsource (id) NOT NULL,
+  user_id UUID REFERENCES user_profile (id) NOT NULL,
+  currency_id UUID REFERENCES currency (id) NOT NULL,
+  timestamp TIMESTAMP NOT NULL
 );
 
 -- VIEWS
 
-CREATE VIEW ws_with_asset AS
+CREATE VIEW ws_with_type AS
 SELECT
   ws.id,
   ws.name,
-  asset_type.name as asset_type
-from w_source ws
-INNER JOIN asset_type ON asset_type.id = ws.asset_type_id;
+  ws_type.name as ws_type
+from wsource ws
+INNER JOIN ws_type ON ws_type.id = ws.ws_type;
 
--- VIEWS
+CREATE VIEW user_ws AS
+SELECT
+  ws.id,
+  ws.name,
+  ws.ws_type,
+  wuc.user_id
+from ws_with_type ws
+INNER JOIN ws_user_connector wuc ON ws.id = wuc.ws_id
+INNER JOIN user_profile u ON u.id = wuc.user_id;
 
-INSERT INTO asset_type
+
+
+CREATE VIEW ws_currency AS
+SELECT
+  c.id,
+  wcc.ws_id,
+  c.name as name
+from wsource ws
+INNER JOIN ws_currency_connector wcc ON wcc.ws_id = ws.id
+INNER JOIN currency c ON c.id = wcc.currency_id;
+-- INSERTS
+
+INSERT INTO ws_type
 VALUES
   (gen_random_uuid(), 'p2p'),
   (gen_random_uuid(), 'cryptocurrency'),
@@ -71,3 +96,4 @@ INSERT INTO currency
 VALUES
   (gen_random_uuid(), 'czk'),
   (gen_random_uuid(), 'eur');
+

@@ -1,7 +1,7 @@
 package models
 
-// User struct represents user
-type User struct {
+// Currency struct represents currency
+type Currency struct {
 	ID   string `json:"id" db:"id"`
 	Name string `json:"name" db:"name"`
 }

@@ -1,4 +1,4 @@
-package userWeight
+package wsource
 
 import (
 	"github.com/gin-gonic/gin"
@@ -10,9 +10,11 @@ type Routes struct {
 }
 
 func Register(r *gin.RouterGroup, db *sqlx.DB) {
-	routes := &Routes{db}
+	routes := &Routes{Db: db}
 
-	g := r.Group("/:id/weight")
-	g.GET("", routes.Get)
+	g := r.Group("/wsource")
+
+	g.GET("/:id", routes.Get)
+	g.GET("", routes.GetAll)
 	g.POST("", routes.Post)
 }

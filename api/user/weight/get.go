@@ -1,4 +1,4 @@
-package userWeight
+package weight
 
 import (
 	"lifeprogress/models"

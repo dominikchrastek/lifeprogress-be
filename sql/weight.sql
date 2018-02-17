@@ -25,7 +25,7 @@ CREATE TABLE weight
 CREATE TABLE user_weight_connector
 (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id INT REFERENCES user_profile (id) NOT NULL,
+  user_id UUID REFERENCES user_profile (id) NOT NULL,
   weight_id UUID REFERENCES weight (id) NOT NULL
 );
 
