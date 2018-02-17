@@ -37,7 +37,6 @@ func GetWSourcesC(db *sqlx.DB, wsources []models.WSource) ([]models.WSourceC, er
 		wsWithCurrencies = append(wsWithCurrencies, models.WSourceC{models.WSourceCommon{source.ID, source.Name, source.Type}, currency})
 	}
 
-	fmt.Println(wsWithCurrencies)
 	return wsWithCurrencies, nil
 }
 
@@ -48,7 +47,7 @@ func (r *Routes) GetAll(c *gin.Context) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	fmt.Println(wsources)
+
 	wsWithCurrencies, err := GetWSourcesC(r.Db, wsources)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)

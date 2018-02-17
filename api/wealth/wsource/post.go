@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lib/pq"
 )
 
 const createWSource = `
@@ -20,10 +21,10 @@ const connectWSC = `
 
 // Post create wsource
 func (r *Routes) Post(c *gin.Context) {
-	var data models.WSource
+	var wsource models.WSourceC
 
 	// reponse to JSON
-	if err := c.BindJSON(&data); err != nil {
+	if err := c.BindJSON(&wsource); err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
@@ -43,26 +44,37 @@ func (r *Routes) Post(c *gin.Context) {
 		return
 	}
 
+	defer stmt.Close()
+
 	// id of created wsource
-	var id string
+	var wsourceID string
 	// execute wsource insert query
-	if err := stmt.QueryRow(&data).Scan(&id); err != nil {
+	if err := stmt.QueryRow(&wsource).Scan(&wsourceID); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		tx.Rollback()
 		return
 	}
 
-	// connector query data
-	cData := map[string]interface{}{"currency_id": data.CurrencyID, "ws_id": id}
-	// prepare connector query
-	cstmt, err := tx.PrepareNamed(connectWSC)
+	// prepare connector query (bulk)
+	cstmt, err := tx.Prepare(pq.CopyIn("ws_currency_connector", "currency_id", "ws_id"))
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		tx.Rollback()
 		return
 	}
-	// execute connector query
-	if _, err := cstmt.Exec(cData); err != nil {
+
+	defer cstmt.Close()
+
+	// exec bulk stuff
+	for _, currency := range wsource.Currencies {
+		_, err = cstmt.Exec(currency.ID, wsourceID)
+		if err != nil {
+			c.AbortWithError(http.StatusInternalServerError, err)
+		}
+	}
+
+	// execute connector insert (bulk)
+	if _, err := cstmt.Exec(); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		tx.Rollback()
 		return
@@ -76,6 +88,6 @@ func (r *Routes) Post(c *gin.Context) {
 
 	// send data
 	c.JSON(http.StatusOK, gin.H{
-		"data": id,
+		"data": wsourceID,
 	})
 }
