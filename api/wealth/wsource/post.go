@@ -35,7 +35,6 @@ func (r *Routes) Post(c *gin.Context) {
 	stmt, err := tx.PrepareNamed(createWSource)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
-		tx.Rollback()
 		return
 	}
 
@@ -65,6 +64,8 @@ func (r *Routes) Post(c *gin.Context) {
 		_, err = cstmt.Exec(currency.ID, wsourceID)
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
+			tx.Rollback()
+			return
 		}
 	}
 
