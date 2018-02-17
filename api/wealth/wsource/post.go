@@ -14,11 +14,6 @@ const createWSource = `
 	RETURNING id
 `
 
-const connectWSC = `
-	INSERT INTO ws_currency_connector (currency_id, ws_id)
-	VALUES (:currency_id, :ws_id)
-`
-
 // Post create wsource
 func (r *Routes) Post(c *gin.Context) {
 	var wsource models.WSourceC
