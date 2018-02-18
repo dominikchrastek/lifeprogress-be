@@ -1,6 +1,7 @@
 package api
 
 import (
+	"lifeprogress/api/life"
 	"lifeprogress/api/meta"
 	"lifeprogress/api/user"
 	"lifeprogress/api/wealth"
@@ -16,4 +17,5 @@ func Register(app *gin.Engine, db *sqlx.DB) {
 	meta.Register(apiGroup, db)
 	user.Register(apiGroup, db)
 	wealth.Register(apiGroup, db)
+	life.Register(apiGroup, db)
 }

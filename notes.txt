@@ -22,8 +22,9 @@ TODO: create this api structure
       /weight
         GET: get {id} user's  weights DONE B,F
         POST: create {id} user's  weight DONE B,F
-        PUT: update {id} user's  weight
-        DELETE: delete {id} user's  weight
+        /:weight-id
+          DELETE: delete weight DONE B
+
   /wsource
     GET: get wsources DONE B,F
     POST: create wsource DONE, B,F
@@ -31,6 +32,7 @@ TODO: create this api structure
     DELETE: delete wsource
     /:id
       GET: get {id} wsource
+
   /currency
     GET: get currencies DONE
     POST: create currency
@@ -38,4 +40,9 @@ TODO: create this api structure
     PUT: create currency
     /:id
       GET: get currency
+
+  -- LIFE STUFF --
+  /weight
+    PUT: update weight DONE B
+
 
