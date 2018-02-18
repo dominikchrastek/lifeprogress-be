@@ -34,12 +34,12 @@ TODO: create this api structure
       GET: get {id} wsource
 
   /currency
-    GET: get currencies DONE
-    POST: create currency
-    DELETE: create currency
-    PUT: create currency
+    GET: get currencies DONE B, F
+    POST: create currency DONE B
+    DELETE: delete currency DONE B
+    PUT: update currency DONE B
     /:id
-      GET: get currency
+      GET: get currency DONE B
 
   -- LIFE STUFF --
   /weight

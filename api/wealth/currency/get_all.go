@@ -21,14 +21,14 @@ func GetCurrencies(db *sqlx.DB) ([]models.Currency, error) {
 	return currencies, nil
 }
 
-// Get all currencies
-func (r *Routes) Get(c *gin.Context) {
+// GetAll all currencies
+func (r *Routes) GetAll(c *gin.Context) {
 	currencies, err := GetCurrencies(r.Db)
 	if err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"currencies": currencies,
+		"data": currencies,
 	})
 }

@@ -15,5 +15,9 @@ func Register(r *gin.RouterGroup, db *sqlx.DB) {
 	g := r.Group("/currency")
 
 	g.POST("", routes.Post)
+	g.PUT("/:id", routes.Put)
+	g.DELETE("/:id", routes.Delete)
+	g.GET("", routes.GetAll)
+	g.GET("/:id", routes.Get)
 
 }
