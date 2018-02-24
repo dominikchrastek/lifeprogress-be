@@ -39,14 +39,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	defer dbc.Close()
 
-	// settings := cors.Config{
+	// corsConfg := cors.New(cors.Config{
+	// 	AllowAllOrigins:     true
 	// 	AllowMethods:    []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
-	// 	AllowAllOrigins: true,
-	// }
+	// 	AllowHeaders:     []string{"Origin"},
+	// 	ExposeHeaders:    []string{"Content-Length"},
+	// 	AllowCredentials: true,
+	// })
 
-	app.Use(cors.Default())
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+	app.Use(cors.New(corsConfig))
 
 	api.Register(app, dbc)
 
