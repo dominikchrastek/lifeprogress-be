@@ -13,6 +13,13 @@ const createWSource = `
 	VALUES (:name, :ws_type)
 	RETURNING id
 `
+const getPostReturn = `
+	SELECT
+	 id,
+	 name,
+	 ws_type
+	FROM ws_with_type WHERE id = $1
+`
 
 // Post create wsource
 func (r *Routes) Post(c *gin.Context) {
@@ -82,8 +89,24 @@ func (r *Routes) Post(c *gin.Context) {
 		return
 	}
 
+	// select data for response
+	responseData := []models.WSource{}
+	err = r.Db.Select(&responseData, getPostReturn, wsourceID)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	// add currecnies to wsource data
+	wsWithCurrencies, err := GetWSourcesC(r.Db, responseData)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
 	// send data
 	c.JSON(http.StatusOK, gin.H{
-		"data": wsourceID,
+		// [0] because 1 stuff was posted
+		"data": wsWithCurrencies[0],
 	})
 }
