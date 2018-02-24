@@ -39,8 +39,8 @@ TODO: create this api structure
 
   /currency
     GET: get currencies DONE B, F
-    POST: create currency DONE B
-    DELETE: delete currency DONE B
+    POST: create currency DONE B, F
+    DELETE: delete currency DONE B, F
     PUT: update currency DONE B
     /:id
       GET: get currency DONE B
