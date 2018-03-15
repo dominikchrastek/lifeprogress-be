@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// https://api.fixer.io/
 type Response struct {
 	Base  string             `json:"base"`
 	Date  string             `json:"date"`
