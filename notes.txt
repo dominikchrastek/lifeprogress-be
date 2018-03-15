@@ -2,51 +2,52 @@ TODO: create this api structure
 
 /api
   /meta
-    GET: get meta stuff DONE B,F
+    GET: get meta stuff | DONE B,F
 
 -- USER STUFF --
   /user
-    GET: get all users DONE
+    GET: get all users | DONE
     /:id
-      GET: get user DONE
-      POST: create user
-      DELETE: delete user
-      PUT: update user
+      GET: get user | DONE
+      POST: create user |
+      DELETE: delete user |
+      PUT: update user |
       -- USER WEALTH STUFF --
       /wsource
-        GET: get {id} user's  wsources DONE
-        POST: create {id} user's  wsources DONE
-        DELETE: delete {id} user's  wsources
+        GET: get {id} user's  wsources | DONE
+        POST: create {id} user's  wsources | DONE
+        DELETE: delete {id} user's wsources |
       /wsrecord
-        GET: get {id} user's  wsrecords
-        POST: create {id} user's wsrecord
-        DELETE: delete {id} user's  wsrecord
+        GET: get {id} user's  wsrecords | DONE B
+        POST: create {id} user's wsrecord | DONE B
       -- USER LIFE STUFF --
       /weight
-        GET: get {id} user's weights DONE B,F
-        POST: create {id} user's  weight DONE B,F
+        GET: get {id} user's weights | DONE B,F
+        POST: create {id} user's  weight | DONE B,F
         /:weight-id
-          DELETE: delete {id} user's {weight-id} weight DONE B
+          DELETE: delete {id} user's {weight-id} weight | DONE B
 
   -- WEALTH STUFF --
   /wsource
-    GET: get wsources DONE B,F
-    POST: create wsource DONE, B,F
-    PUT: update wsource
-    DELETE: delete wsource
+    GET: get wsources | DONE B,F
+    POST: create wsource | DONE, B,F
+    PUT: update wsource |
+    DELETE: delete wsource |
     /:id
-      GET: get {id} wsource
+      GET: get {id} wsource |
+  /wsrecord
+    DELETE: delete {id} wsrecord | DONE B
 
   /currency
-    GET: get currencies DONE B, F
-    POST: create currency DONE B, F
-    DELETE: delete currency DONE B, F
-    PUT: update currency DONE B
+    GET: get currencies | DONE B, F
+    POST: create currency | DONE B, F
+    DELETE: delete currency | DONE B, F
+    PUT: update currency | DONE B
     /:id
-      GET: get currency DONE B
+      GET: get currency | DONE B
 
   -- LIFE STUFF --
   /weight
-    PUT: update weight DONE B
+    PUT: update weight | DONE B
 
 
