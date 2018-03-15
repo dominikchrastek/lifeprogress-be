@@ -2,20 +2,31 @@
 DROP VIEW IF EXISTS user_ws;
 DROP VIEW IF EXISTS ws_with_type;
 DROP VIEW IF EXISTS ws_currency;
+DROP VIEW IF EXISTS wsr_currency;
 
 DROP TABLE IF EXISTS ws_user_connector;
 DROP TABLE IF EXISTS ws_currency_connector;
 DROP TABLE IF EXISTS ws_record;
 DROP TABLE IF EXISTS wsource;
 DROP TABLE IF EXISTS ws_type;
+DROP TABLE IF EXISTS currency_rate;
 DROP TABLE IF EXISTS currency;
 
 -- TABLES
+
 CREATE TABLE currency
 (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(64) NOT NULL
 );
+
+-- CREATE TABLE currency_rate (
+--   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--   from_currency UUID REFERENCES currency(id) NOT NULL,
+--   to_currency UUID REFERENCES currency(id) NOT NULL,
+--   value REAL NOT NULL,
+--   timestamp TIMESTAMP NOT NULL
+-- );
 
 CREATE TABLE ws_type
 (
@@ -51,6 +62,7 @@ CREATE TABLE ws_record (
   timestamp TIMESTAMP NOT NULL
 );
 
+
 -- VIEWS
 
 CREATE VIEW ws_with_type AS
@@ -81,19 +93,63 @@ SELECT
 from wsource ws
 INNER JOIN ws_currency_connector wcc ON wcc.ws_id = ws.id
 INNER JOIN currency c ON c.id = wcc.currency_id;
+
+
+CREATE VIEW wsr_currency AS
+SELECT
+  wsr.id,
+  wsr.name,
+  wsr.value,
+  wsr.timestamp,
+  wsr.ws_id,
+  wsr.user_id,
+  c.name as currency_name
+from ws_record wsr
+INNER JOIN currency c ON c.id = wsr.currency_id;
 -- INSERTS
 
 INSERT INTO ws_type
 VALUES
-  (gen_random_uuid(), 'p2p'),
-  (gen_random_uuid(), 'cryptocurrency'),
-  (gen_random_uuid(), 'bank_account'),
-  (gen_random_uuid(), 'saving_account'),
-  (gen_random_uuid(), 'cash'),
-  (gen_random_uuid(), 'investment_account');
+  ('1cbd81c0-9f94-44cc-8eac-6798720bbf61', 'p2p'),
+  ('1cbd81c0-9f94-44cc-8eac-6798720bbf62', 'cryptocurrency'),
+  ('1cbd81c0-9f94-44cc-8eac-6798720bbf63', 'bank_account'),
+  ('1cbd81c0-9f94-44cc-8eac-6798720bbf64', 'saving_account'),
+  ('1cbd81c0-9f94-44cc-8eac-6798720bbf65', 'cash'),
+  ('1cbd81c0-9f94-44cc-8eac-6798720bbf66', 'investment_account');
 
 INSERT INTO currency
 VALUES
-  (gen_random_uuid(), 'czk'),
-  (gen_random_uuid(), 'eur');
+  ('2cbd81c0-9f94-44cc-8eac-6798720bbf61', 'CZK'),
+  ('2cbd81c0-9f94-44cc-8eac-6798720bbf62', 'EUR');
 
+INSERT INTO wsource
+VALUES
+  ('3cbd81c0-9f94-44cc-8eac-6798720bbf61', 'mintos', '1cbd81c0-9f94-44cc-8eac-6798720bbf61'),
+  ('3cbd81c0-9f94-44cc-8eac-6798720bbf62', 'coinbase', '1cbd81c0-9f94-44cc-8eac-6798720bbf62');
+
+INSERT INTO ws_currency_connector
+VALUES
+  ('5cbd81c0-9f94-44cc-8eac-6798720bbf61', '2cbd81c0-9f94-44cc-8eac-6798720bbf61', '3cbd81c0-9f94-44cc-8eac-6798720bbf61'),
+  ('5cbd81c0-9f94-44cc-8eac-6798720bbf62', '2cbd81c0-9f94-44cc-8eac-6798720bbf61', '3cbd81c0-9f94-44cc-8eac-6798720bbf62');
+
+INSERT INTO ws_user_connector
+VALUES
+  ('4cbd81c0-9f94-44cc-8eac-6798720bbf61', '8cbd81c0-9f94-44cc-8eac-6798720bbf67', '3cbd81c0-9f94-44cc-8eac-6798720bbf61'),
+  ('4cbd81c0-9f94-44cc-8eac-6798720bbf62', '8cbd81c0-9f94-44cc-8eac-6798720bbf67', '3cbd81c0-9f94-44cc-8eac-6798720bbf62');
+
+INSERT INTO ws_record
+VALUES
+  ('6cbd81c0-9f94-44cc-8eac-6798720bbf61'
+  ,'first mintos'
+  , 300
+  ,'3cbd81c0-9f94-44cc-8eac-6798720bbf61'
+  ,'8cbd81c0-9f94-44cc-8eac-6798720bbf67'
+  ,'2cbd81c0-9f94-44cc-8eac-6798720bbf61'
+  , current_timestamp),
+  ('6cbd81c0-9f94-44cc-8eac-6798720bbf62'
+  ,'first coinbase'
+  , 301
+  ,'3cbd81c0-9f94-44cc-8eac-6798720bbf62'
+  ,'8cbd81c0-9f94-44cc-8eac-6798720bbf67'
+  ,'2cbd81c0-9f94-44cc-8eac-6798720bbf61'
+  , '2018-03-16 13:55:50.171906');

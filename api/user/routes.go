@@ -3,6 +3,7 @@ package user
 import (
 	"lifeprogress/api/user/weight"
 	"lifeprogress/api/user/wsource"
+	"lifeprogress/api/user/wsrecord"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
@@ -22,4 +23,5 @@ func Register(r *gin.RouterGroup, db *sqlx.DB) {
 	g.GET("/:id", routes.Get)
 	wsource.Register(g, db)
 	weight.Register(g, db)
+	wsrecord.Register(g, db)
 }
