@@ -38,8 +38,8 @@ func (r *Routes) Post(c *gin.Context) {
 	userID := c.Param("id")
 
 	// reponse to JSON
-	if err := c.BindJSON(&data); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

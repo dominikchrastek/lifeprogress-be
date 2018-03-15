@@ -18,8 +18,8 @@ const putQuery = `
 func (r *Routes) Put(c *gin.Context) {
 	currency := &models.Currency{}
 
-	if err := c.BindJSON(currency); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+	if err := c.ShouldBindJSON(currency); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

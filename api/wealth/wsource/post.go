@@ -26,8 +26,8 @@ func (r *Routes) Post(c *gin.Context) {
 	var wsource models.WSourceC
 
 	// reponse to JSON
-	if err := c.BindJSON(&wsource); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+	if err := c.ShouldBindJSON(&wsource); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

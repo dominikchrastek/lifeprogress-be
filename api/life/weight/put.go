@@ -19,8 +19,8 @@ const putQuery = `
 func (r *Routes) Put(c *gin.Context) {
 	weight := &models.Weight{}
 
-	if err := c.BindJSON(weight); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+	if err := c.ShouldBindJSON(weight); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
