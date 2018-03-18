@@ -1,7 +1,6 @@
 package wsource
 
 import (
-	"fmt"
 	"lifeprogress/models"
 	"net/http"
 
@@ -30,7 +29,7 @@ func GetWSourcesC(db *sqlx.DB, wsources []models.WSource) ([]models.WSourceC, er
 	var wsWithCurrencies []models.WSourceC
 	for _, source := range wsources {
 		var currency []models.Currency
-		fmt.Println(source)
+		// do it smarter
 		if err := db.Select(&currency, getCurrencies, source.ID); err != nil {
 			return nil, err
 		}

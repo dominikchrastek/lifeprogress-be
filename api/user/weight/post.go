@@ -1,7 +1,6 @@
 package weight
 
 import (
-	"fmt"
 	"lifeprogress/models"
 	"net/http"
 
@@ -65,11 +64,8 @@ func (r *Routes) Post(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(id)
-
 	// insert connect weight with user
 	cData := map[string]interface{}{"user_id": userID, "weight_id": id}
-	fmt.Println(cData)
 	if _, err := r.Db.NamedExec(connectorQuery, cData); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
