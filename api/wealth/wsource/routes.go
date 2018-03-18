@@ -15,6 +15,7 @@ func Register(r *gin.RouterGroup, db *sqlx.DB) {
 	g := r.Group("/wsource")
 
 	g.GET("/:id", routes.Get)
+	g.DELETE("/:id", routes.Delete)
 	g.GET("", routes.GetAll)
 	g.POST("", routes.Post)
 }
