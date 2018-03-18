@@ -15,28 +15,13 @@ const connectorQuery = `
 // Post create wsource record
 func (r *Routes) Post(c *gin.Context) {
 	userID := c.Param("id")
-	var data = map[string]interface{}{"user_id": userID, "ws_id": ""}
+	wsID := c.Param("ws_id")
+	var data = map[string]interface{}{"user_id": userID, "ws_id": wsID}
 
-	// reponse to JSON
-	if err := c.ShouldBindJSON(data); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	// prepare wsource query
-	stmt, err := r.Db.PrepareNamed(connectorQuery)
-	if err != nil {
+	// insert connect weight with user
+	if _, err := r.Db.NamedExec(connectorQuery, data); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-
-	var id string
-	if err := stmt.QueryRow(&data).Scan(&id); err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"data": id,
-	})
+	c.Status(http.StatusNoContent)
 }
