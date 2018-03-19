@@ -12,7 +12,6 @@ import (
 const getAllSources = `
 	SELECT
 	 id,
-	 name,
 	 value,
 	 timestamp,
 	 currency_name

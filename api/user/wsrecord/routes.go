@@ -17,4 +17,5 @@ func Register(r *gin.RouterGroup, db *sqlx.DB) {
 	g := r.Group("/:id/wsrecord")
 	g.POST("", routes.Post)
 	g.GET("", routes.GetAll)
+	g.GET("/external", routes.GetExternal)
 }

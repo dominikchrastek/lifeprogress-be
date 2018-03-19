@@ -2,7 +2,6 @@ package models
 
 type WSRecordCommon struct {
 	ID        string  `json:"id" db:"id"`
-	Name      string  `json:"name" db:"name" binding:"required"`
 	Value     float32 `json:"value" db:"value" binding:"required"`
 	Timestamp string  `json:"timestamp" db:"timestamp"`
 }

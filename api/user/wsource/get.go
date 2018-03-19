@@ -11,6 +11,7 @@ const getSources = `
 	SELECT
 	 id,
 	 name,
+	 automated,
 	 ws_type,
 	FROM user_ws WHERE user_id = $1
 `

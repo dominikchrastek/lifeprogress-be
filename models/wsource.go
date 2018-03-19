@@ -3,9 +3,10 @@ package models
 // WSourceCommon is struct that contains common stuff
 // for another WSource structs
 type WSourceCommon struct {
-	ID   string `json:"id" db:"id"`
-	Name string `json:"name" db:"name" binding:"required"`
-	Type string `json:"type" db:"ws_type" binding:"required"`
+	ID        string `json:"id" db:"id"`
+	Name      string `json:"name" db:"name" binding:"required"`
+	Automated bool   `json:"automated" db:"automated" binding:"required"`
+	Type      string `json:"type" db:"ws_type" binding:"required"`
 }
 
 // WSource is struct that contains WSourceCommon + CurrencyID

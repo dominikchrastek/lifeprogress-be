@@ -51,3 +51,7 @@ TODO: create this api structure
     PUT: update weight | DONE B
 
 
+
+TODO: cron
+call automated wsources task every day
+use this: https://godoc.org/github.com/robfig/cron

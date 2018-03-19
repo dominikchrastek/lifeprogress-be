@@ -13,6 +13,7 @@ const getWSources = `
 	SELECT
 	 id,
 	 name,
+	 automated,
 	 ws_type
 	FROM ws_with_type
 `
@@ -33,7 +34,7 @@ func GetWSourcesC(db *sqlx.DB, wsources []models.WSource) ([]models.WSourceC, er
 		if err := db.Select(&currency, getCurrencies, source.ID); err != nil {
 			return nil, err
 		}
-		wsWithCurrencies = append(wsWithCurrencies, models.WSourceC{models.WSourceCommon{source.ID, source.Name, source.Type}, currency})
+		wsWithCurrencies = append(wsWithCurrencies, models.WSourceC{models.WSourceCommon{source.ID, source.Name, source.Automated, source.Type}, currency})
 	}
 
 	return wsWithCurrencies, nil
