@@ -33,12 +33,12 @@ func (r *Routes) Post(c *gin.Context) {
 	userID := c.Param("id")
 	var data models.WSRecordPost
 	data.UserID = userID
+
 	// reponse to JSON
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	id, err := CreateWSRecord(r.Db, data)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)

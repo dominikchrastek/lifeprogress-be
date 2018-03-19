@@ -8,9 +8,9 @@ type WSRecordCommon struct {
 
 type WSRecordPost struct {
 	WSRecordCommon
-	WSourceID  string `json:"ws_id" db:"ws_id" binding:"required"`
-	CurrencyID string `json:"currency_id" db:"currency_id" binding:"required"`
-	UserID     string `json:"user_id" db:"user_id" binding:"required"`
+	WSourceID  string `json:"wsourceId" db:"ws_id" binding:"required"`
+	CurrencyID string `json:"currencyId" db:"currency_id" binding:"required"`
+	UserID     string `json:"userId" db:"user_id" binding:"required"`
 }
 
 type WSRecordGet struct {
